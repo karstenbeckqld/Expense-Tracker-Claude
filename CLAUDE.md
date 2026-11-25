@@ -20,15 +20,17 @@ There is no test suite/framework configured in this repo.
 
 ## Architecture
 
-This is a single-page app with almost no file structure to speak of:
+This is a single-page app with a flat component structure (all files directly in `src/`, no routing or external state management — everything is local `useState`):
 
 - `src/main.jsx` — entry point; mounts `<App />` into `#root` inside `StrictMode`.
-- `src/App.jsx` — the entire application. All state, derived calculations, event handlers, and JSX for the summary cards, the add-transaction form, and the filterable transactions table live in this one component. There is no component decomposition, routing, or external state management — everything is local `useState`.
-- `src/App.css` / `src/index.css` — plain CSS, no CSS modules or styling library. Class names like `income-amount`, `expense-amount`, and `balance-amount` are reused across both the summary cards and the transactions table to color-code positive/negative values — keep that convention in mind when touching styles.
+- `src/App.jsx` — parent component. Owns the `transactions` state and the `categories` array, computes the summary totals, and composes the three child components below.
+- `src/Summary.jsx` — the three summary cards (Income/Expenses/Balance). Props: `totalIncome`, `totalExpenses`, `balance`. Stateless — totals are computed in `App` and passed down.
+- `src/TransactionForm.jsx` — the add-transaction form. Props: `categories`, `onAdd`. Owns its own form-field state (`description`, `amount`, `type`, `category`); on submit it builds a new transaction object (with `Date.now()` as `id` and today's date), passes it to `onAdd`, and resets its fields.
+- `src/TransactionList.jsx` — the filter dropdowns and transactions table. Props: `transactions`, `categories`. Owns its own filter state (`filterType`, `filterCategory`) and derives `filteredTransactions` from the `transactions` prop.
+- `src/App.css` / `src/index.css` — plain CSS, no CSS modules or styling library. Class names like `income-amount`, `expense-amount`, and `balance-amount` are reused across the summary cards (in `Summary.jsx`) and the transactions table (in `TransactionList.jsx`) to color-code positive/negative values — keep that convention in mind when touching styles.
 
-Key data flow inside `App.jsx`:
-- `transactions` is seeded with a hardcoded in-memory array (`useState`) — there is no backend or persistence layer, so a page refresh resets all data to the seed values.
-- `totalIncome`/`totalExpenses`/`balance` are derived via `.filter().reduce()` over `transactions` on every render (not memoized).
-- `filteredTransactions` is derived by chaining `filterType`/`filterCategory` filters over `transactions`.
-- The `categories` array is the single source of truth for category options in both the add-transaction form and the category filter dropdown.
-- `handleSubmit` appends a new transaction (with `Date.now()` as `id` and today's date) to `transactions` and resets the form fields.
+Key data flow:
+- `transactions` (in `App`) is seeded with a hardcoded in-memory array — there is no backend or persistence layer, so a page refresh resets all data to the seed values. It is the only shared state; children receive it via props and add to it via the `onAdd` callback (`App.handleAdd`).
+- `totalIncome`/`totalExpenses`/`balance` are derived in `App` via `.filter().reduce()` over `transactions` on every render (not memoized).
+- The `categories` array in `App` is the single source of truth for category options; it is passed as a prop to both `TransactionForm` and `TransactionList`.
+- Form state and filter state are local to their respective child components, so changing a filter or typing in the form only re-renders that component, not `App` or its siblings.
