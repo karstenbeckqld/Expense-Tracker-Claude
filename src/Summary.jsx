@@ -1,19 +1,19 @@
+import { formatMoney } from './format'
+
 function Summary({ totalIncome, totalExpenses, balance }) {
+  const isOver = balance < 0;
+
   return (
-    <div className="summary">
-      <div className="summary-card">
-        <h3>Income</h3>
-        <p className="income-amount">${totalIncome}</p>
-      </div>
-      <div className="summary-card">
-        <h3>Expenses</h3>
-        <p className="expense-amount">${totalExpenses}</p>
-      </div>
-      <div className="summary-card">
-        <h3>Balance</h3>
-        <p className="balance-amount">${balance}</p>
-      </div>
-    </div>
+    <section className="summary" aria-label="Summary">
+      <p className="summary-headline">
+        <span className={`balance-amount${isOver ? " is-negative" : ""}`}>{formatMoney(balance)}</span>{" "}
+        {isOver ? "over" : "left"}
+      </p>
+      <p className="summary-detail">
+        You earned <span className="income-amount">{formatMoney(totalIncome)}</span> and spent{" "}
+        <span className="expense-amount">{formatMoney(totalExpenses)}</span>.
+      </p>
+    </section>
   );
 }
 

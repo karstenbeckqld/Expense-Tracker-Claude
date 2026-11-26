@@ -26,33 +26,59 @@ function TransactionForm({ categories, onAdd }) {
   };
 
   return (
-    <div className="add-transaction">
-      <h2>Add Transaction</h2>
+    <section className="add-transaction" aria-labelledby="add-heading">
+      <h2 id="add-heading">Add a transaction</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
+        <label className="field field-description">
+          <span className="field-label">Description</span>
+          <input
+            type="text"
+            placeholder="e.g. Coffee"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </label>
+        <label className="field field-amount">
+          <span className="field-label">Amount</span>
+          <span className="amount-input">
+            <span aria-hidden="true">$</span>
+            <input
+              type="number"
+              inputMode="decimal"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </span>
+        </label>
+        <fieldset className="field segmented">
+          <legend className="field-label">Type</legend>
+          {["expense", "income"].map(option => (
+            <label key={option} className="segmented-option">
+              <input
+                type="radio"
+                name="type"
+                value={option}
+                checked={type === option}
+                onChange={(e) => setType(e.target.value)}
+              />
+              <span>{option === "expense" ? "Expense" : "Income"}</span>
+            </label>
           ))}
-        </select>
-        <button type="submit">Add</button>
+        </fieldset>
+        <label className="field field-category">
+          <span className="field-label">Category</span>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </label>
+        <button type="submit" className="primary-btn">Add</button>
       </form>
-    </div>
+    </section>
   );
 }
 

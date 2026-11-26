@@ -39,11 +39,12 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Finance Tracker</h1>
-      <p className="subtitle">Track your income and expenses</p>
+      <header className="masthead">
+        <h1>Finance Tracker</h1>
+        <p className="subtitle">Track your income and expenses</p>
+      </header>
 
       <Summary totalIncome={totalIncome} totalExpenses={totalExpenses} balance={balance} />
-
       <SpendingChart transactions={transactions} />
 
       <TransactionForm categories={categories} onAdd={handleAdd} />
