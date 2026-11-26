@@ -8,15 +8,20 @@ function TransactionForm({ categories, onAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!description || !amount) return;
+    const trimmedDescription = description.trim();
+    const parsedAmount = Number(amount);
+    if (!trimmedDescription || !Number.isFinite(parsedAmount) || parsedAmount <= 0) return;
+
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
     onAdd({
       id: Date.now(),
-      description,
-      amount: Number(amount),
+      description: trimmedDescription,
+      amount: parsedAmount,
       type,
       category,
-      date: new Date().toISOString().split('T')[0],
+      date: today,
     });
 
     setDescription("");
@@ -45,7 +50,7 @@ function TransactionForm({ categories, onAdd }) {
             <input
               type="number"
               inputMode="decimal"
-              min="0"
+              min="0.01"
               step="0.01"
               placeholder="0.00"
               value={amount}
