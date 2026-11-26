@@ -49,7 +49,15 @@ function TransactionList({ transactions, categories, onDelete }) {
                 {t.type === "income" ? "+" : "-"}${t.amount}
               </td>
               <td>
-                <button className="delete-btn" onClick={() => onDelete(t.id)} aria-label={`Delete ${t.description}`}>
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    if (window.confirm(`Delete "${t.description}" (${t.type === "income" ? "+" : "-"}$${t.amount})?`)) {
+                      onDelete(t.id);
+                    }
+                  }}
+                  aria-label={`Delete ${t.description}`}
+                >
                   Delete
                 </button>
               </td>
