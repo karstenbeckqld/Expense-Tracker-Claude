@@ -45,16 +45,10 @@ function App() {
       </header>
 
       <Summary totalIncome={totalIncome} totalExpenses={totalExpenses} balance={balance} />
+      <SpendingChart transactions={transactions} />
 
-      <div className="layout">
-        <main className="layout-main">
-          <TransactionList transactions={transactions} categories={categories} onDelete={handleDelete} />
-        </main>
-        <aside className="layout-rail">
-          <TransactionForm categories={categories} onAdd={handleAdd} />
-          <SpendingChart transactions={transactions} />
-        </aside>
-      </div>
+      <TransactionForm categories={categories} onAdd={handleAdd} />
+      <TransactionList transactions={transactions} categories={categories} onDelete={handleDelete} />
     </div>
   );
 }

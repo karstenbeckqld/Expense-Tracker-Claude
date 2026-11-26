@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap');
-
 :root {
-  --paper: #EDF1EC;
-  --sheet: #FBFCFA;
-  --ink: #13302A;
-  --muted: #5E6E68;
-  --rule: #D5DDD7;
-  --income: #2F7A4F;
-  --expense: #A8433A;
-  --brass: #9A7428;
+  /* Night navy: depth comes from lighter layers, not shadows */
+  --ground: #151B27;
+  --wash: #1C2331;
+  --control: #222A3A;
+  --hairline: #2A3344;
+  --hairline-strong: #3A4459;
+  --ink: #E6E9F0;
+  --muted: #8E97AA;
+  --income: #5DD39A;
+  --danger: #FF7A8A;
 
-  --radius-sheet: 14px;
-  --radius-control: 8px;
-
-  /* Type scale (perfect fourth, 16px base) */
+  /* Type scale: 16px base, ratio 1.25 */
   --step--1: 0.8125rem;
   --step-0: 1rem;
-  --step-1: 1.3125rem;
-  --step-4: clamp(3rem, 9vw, 5.5rem);
+  --step-1: 1.25rem;
+  --step-hero: clamp(2.75rem, 8vw, 4.25rem);
+
+  --radius: 10px;
+  color-scheme: dark;
 }
 
 * {
@@ -27,11 +27,10 @@
 }
 
 body {
-  font-family: "Bricolage Grotesque", system-ui, sans-serif;
-  font-variation-settings: "opsz" 14;
+  font-family: "Instrument Sans", system-ui, sans-serif;
   font-size: var(--step-0);
   line-height: 1.5;
-  background-color: var(--paper);
+  background: var(--ground);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +44,7 @@ select {
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass);
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -62,7 +61,7 @@ select {
   *,
   *::before,
   *::after {
+    animation: none !important;
     transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
   }
 }
