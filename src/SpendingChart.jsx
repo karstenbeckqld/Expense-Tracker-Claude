@@ -1,19 +1,5 @@
-import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-
-// Fixed color per category so a category keeps its color when the bar order changes.
-const CATEGORY_COLORS = {
-  food: "#f59e0b",
-  housing: "#6366f1",
-  utilities: "#06b6d4",
-  transport: "#10b981",
-  entertainment: "#ec4899",
-  salary: "#84cc16",
-  other: "#8b5cf6",
-};
-const FALLBACK_COLOR = "#64748b";
-const colorFor = (category) => CATEGORY_COLORS[category] || FALLBACK_COLOR;
-
-const formatCurrency = (value) => `$${value.toLocaleString()}`;
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { colorFor, formatCurrency } from './format';
 
 function SpendingTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
@@ -40,22 +26,28 @@ function SpendingChart({ transactions }) {
     .sort((a, b) => b.amount - a.amount);
 
   return (
-    <div className="spending-chart">
-      <h2>Spending by Category</h2>
+    <section className="panel spending-chart">
+      <h2>Spending by category</h2>
       {data.length === 0 ? (
-        <p className="chart-empty">No expenses yet.</p>
+        <p className="empty">No expenses yet. Add one to see where your money goes.</p>
       ) : (
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data} margin={{ top: 24, right: 8, bottom: 0, left: 0 }}>
-            <CartesianGrid vertical={false} stroke="#eee" />
-            <XAxis dataKey="category" tick={{ fill: "#52514e", fontSize: 13 }} axisLine={{ stroke: "#ddd" }} tickLine={false} />
-            <YAxis tickFormatter={formatCurrency} tick={{ fill: "#888", fontSize: 12 }} axisLine={false} tickLine={false} width={64} />
-            <Tooltip content={<SpendingTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.04)" }} />
+        // Horizontal bars: category names stay readable in a narrow rail.
+        <ResponsiveContainer width="100%" height={data.length * 40 + 8}>
+          <BarChart data={data} layout="vertical" margin={{ top: 0, right: 64, bottom: 0, left: 0 }} barCategoryGap={10}>
+            <XAxis type="number" hide />
+            <YAxis
+              type="category"
+              dataKey="category"
+              width={96}
+              tick={{ fill: "#5E6E68", fontSize: 13 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip content={<SpendingTooltip />} cursor={{ fill: "rgba(19, 48, 42, 0.05)" }} />
             <Bar
               dataKey="amount"
-              maxBarSize={48}
-              radius={[4, 4, 0, 0]}
-              label={{ position: "top", formatter: formatCurrency, fill: "#52514e", fontSize: 12 }}
+              radius={[0, 3, 3, 0]}
+              label={{ position: "right", formatter: formatCurrency, fill: "#13302A", fontSize: 13 }}
             >
               {data.map((entry) => (
                 <Cell key={entry.category} fill={colorFor(entry.category)} />
@@ -64,7 +56,7 @@ function SpendingChart({ transactions }) {
           </BarChart>
         </ResponsiveContainer>
       )}
-    </div>
+    </section>
   );
 }
 

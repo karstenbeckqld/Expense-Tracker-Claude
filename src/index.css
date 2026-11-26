@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap');
+
+:root {
+  --paper: #EDF1EC;
+  --sheet: #FBFCFA;
+  --ink: #13302A;
+  --muted: #5E6E68;
+  --rule: #D5DDD7;
+  --income: #2F7A4F;
+  --expense: #A8433A;
+  --brass: #9A7428;
+
+  --radius-sheet: 14px;
+  --radius-control: 8px;
+
+  /* Type scale (perfect fourth, 16px base) */
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.3125rem;
+  --step-4: clamp(3rem, 9vw, 5.5rem);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +27,42 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-variation-settings: "opsz" 14;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
