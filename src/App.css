@@ -180,11 +180,18 @@ th {
 
 .chart-tooltip {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 6px 10px;
   background: #fff;
   border: 1px solid #ddd;
   font-size: 13px;
+}
+
+.chart-tooltip-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
 }
 
 .chart-tooltip-label {
